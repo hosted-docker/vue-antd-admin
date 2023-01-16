@@ -1,0 +1,31 @@
+# When pushing a tag. this workflow will trigger site deployment and fixed version address comments
+
+name: Deploy website
+on:
+  push:
+    branches: ['master']
+  pull_request:
+    branches: ['master']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: install
+        run: npm install
+ 
+      - name: build
+        run: npm run docs:build
+
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: xbeeant/vue-antd-admin-docs
+          tags: latest
