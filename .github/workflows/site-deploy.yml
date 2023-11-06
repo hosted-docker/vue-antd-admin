@@ -29,13 +29,13 @@ jobs:
           registry-url: https://registry.npmjs.org/
           cache: "pnpm"
 
-      - name: install
+      - name: Install dependencies
         run: pnpm install
  
-      - name: build
+      - name: Build Docs
         run: pnpm run docs:build
 
-      - name: zip zite
+      - name: Zip site docs
         uses: montudor/action-zip@v1
         with:
           args: zip -qq -r vue-antd-admin.zip docs/.vuepress/dist
