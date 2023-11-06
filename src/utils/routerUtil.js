@@ -75,6 +75,9 @@ function parseRoutes(routesConfig, routerMap) {
       redirect: routeCfg.redirect || router.redirect,
       meta: {...meta, authority: meta.authority || '*'}
     }
+    if (router.beforeEnter) {
+      route.beforeEnter = router.beforeEnter
+    }
     if (routeCfg.invisible || router.invisible) {
       route.meta.invisible = true
     }
@@ -212,7 +215,7 @@ function formatAuthority(routes, pAuthorities = []) {
       let authority = {}
       if (!meta.authority) {
         authority = defaultAuthority
-      }else if (typeof meta.authority === 'string') {
+      }else if (typeof meta.authority === 'string' || Array.isArray(meta.authority)) {
         authority.permission = meta.authority
       } else if (typeof meta.authority === 'object') {
         authority = meta.authority
